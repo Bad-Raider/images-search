@@ -1,0 +1,32 @@
+.search-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+  align-items: center;
+  height: 80px;
+  background-color: #1e1e1e;
+}
+
+.search-form input[type="text"] {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1.2rem;
+  margin-right: 10px;
+}
+
+.search-form button[type="submit"] {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #fff;
+  color: #1e1e1e;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 400ms ease;
+}
+
+.search-form button[type="submit"]:hover {
+  background-color: #f2dbdb;
+  color: #1e1e1e;
+}

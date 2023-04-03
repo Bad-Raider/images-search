@@ -1,0 +1,23 @@
+.is-hiden {
+  /* display: none; */
+}
+
+.load-more {
+  display: block;
+  margin-top: 50px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 10px 20px;
+  border-radius: 5px;
+  /* border: none; */
+  background-color: #1e1e1e;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 400ms ease;
+}
+
+.load-more:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
