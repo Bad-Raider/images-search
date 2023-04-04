@@ -10,7 +10,6 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 import fetchSearchPhoto from './js/fetch';
 
 
-
 const refs = {
     formEL: document.querySelector(".search-form"),
     inputEl: document.querySelector("input[name='searchQuery']"),
@@ -19,31 +18,62 @@ const refs = {
     btnLoadMoreEl: document.querySelector(".load-more"),
 };
 
+let page = 1;
+let perPage = 40;
+let inputValue = "";
+let simpleLightBox; 
+
+refs.btnLoadMoreEl.classList.add("is-hiden");
+
+
 refs.formEL.addEventListener("submit", handleSearchPhotoBySubmitForm);
+
 
 function handleSearchPhotoBySubmitForm(e) {
     e.preventDefault();
-    const inputValue = refs.inputEl.value;
+    page = 1;
+    inputValue = refs.inputEl.value.trim();
+
     if (inputValue === "") {
-        destroyMarkup();
-    }
+        return photoSearchError();
+    };
         
-    fetchSearchPhoto(inputValue)
-        .then((data) => {
-                if (data.length === 0) {
-                photoSearchError();
+    fetchSearchPhoto(inputValue, page, perPage)
+        .then(({totalHits, hits}) => {
+            if (hits.length === 0) {
+                refs.btnLoadMoreEl.classList.add("is-hiden");
+                destroyMarkup();
+                return photoSearchError();
             };
+            refs.btnLoadMoreEl.classList.remove("is-hiden");
+            destroyMarkup();
+            showMessageAboutAllPhoto(totalHits);           
+            createMarkup(hits);
+            createSimpleLightbox();
+        })
+        .catch(() => {
+            photoSearchError();
+        })
+};
+
+// Loade More photo
+
+refs.btnLoadMoreEl.addEventListener("click", handleBtnClick);
+
+    function handleBtnClick() {
+        page += 1;
+        simpleLightBox.destroy();
+
+        fetchSearchPhoto(inputValue, page, perPage)
+        .then((data) => {
+                
             createMarkup(data);
-            // simple light box
-            const lightbox = new SimpleLightbox('.gallery a');
-            lightbox.on('show.simplelightbox');
-            
+            createSimpleLightbox();
         })
         .catch((error) => {
             console.log(error)
         })
 };
-
 
 
 
@@ -56,7 +86,18 @@ function destroyMarkup() {
     refs.gallaryEl.innerHTML = "";
 }
 
-
 function photoSearchError() {
     Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");    
 };
+
+function showMessageAboutAllPhoto(totalHits) {
+    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
+}
+function showInfoMessageNoNamePhoto() {
+    Notiflix.Notify.info("Enter a name for the photo")
+}
+
+function createSimpleLightbox () {
+    simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+};
+

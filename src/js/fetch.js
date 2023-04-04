@@ -11,42 +11,11 @@ const API = "https://pixabay.com/api/";
 // };
 
 
-export default async function fetchSearchPhoto(value) {
-    const response = await axios.get(`${API}?key=${PERSONAL_KEY}&q=${value}&image_type=photo&orientation=horizontal&safesearch=true&colors=grayscale`);
+export default async function fetchSearchPhoto(value, page, perPage) {
+    const response = await axios.get(`${API}?key=${PERSONAL_KEY}&q=${value}&image_type=photo&orientation=horizontal&safesearch=true&colors=grayscale&per_page=${perPage}&page=${page}`);
      
-    const data = await response.data.hits;
+    const data = await response.data;
     console.log(data);
            
     return data;
 };
-
-
-// export default async function fetchSearchPhoto(value) {
-//     return axios.get(`${API}?key=${PERSONAL_KEY}&q=${value}&image_type=photo&orientation=horizontal&safesearch=true`)
-//         .then(function (response) {
-//             console.log(response.data.hits);
-//         })
-//         .catch(function (error) {
-//             console.log(error);
-//         });
-    
-// };
-
-// export function fetchSearchPhoto(value) {
-//     return fetch(`${API}?key=${PERSONAL_KEY}&q=${value}&image_type=photo&orientation=horizontal&safesearch=true`)
-//     .then(response => {
-//       if (!response.ok) {
-        
-//         throw new Error(response.status)
-//         }
-//     return response.json();
-//     }).then(data => {
-//         console.log(data)
-//     })
-// };
-
-// fetchSearchPhoto("cat")
-
-// if (response.data) {
-    
-// }

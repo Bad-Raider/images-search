@@ -1,5 +1,7 @@
 .search-form {
   display: flex;
+  position: fixed;
+  width: 100%;
   justify-content: center;
   margin-bottom: 50px;
   align-items: center;
