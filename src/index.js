@@ -23,8 +23,16 @@ let perPage = 40;
 let inputValue = "";
 let simpleLightBox; 
 
-refs.btnLoadMoreEl.classList.add("is-hiden");
+// const { height: cardHeight } = document
+//   .querySelector(".gallery")
+//   .firstElementChild.getBoundingClientRect();
 
+// window.scrollBy({
+//   top: cardHeight * 2,
+//   behavior: "smooth",
+// });
+
+refs.btnLoadMoreEl.classList.add("is-hiden");
 
 refs.formEL.addEventListener("submit", handleSearchPhotoBySubmitForm);
 
