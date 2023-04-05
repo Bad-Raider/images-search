@@ -65,9 +65,15 @@ refs.btnLoadMoreEl.addEventListener("click", handleBtnClick);
         simpleLightBox.destroy();
 
         fetchSearchPhoto(inputValue, page, perPage)
-        .then((data) => {
+        .then(({totalHits, hits}) => {           
                 
-            createMarkup(data);
+            const totalPages = Math.ceil(totalHits / perPage)
+
+            if (page > totalPages) {
+                refs.btnLoadMoreEl.classList.add("is-hiden");
+                showInfoMessageEndSearch()
+            }    
+            createMarkup(hits);
             createSimpleLightbox();
         })
         .catch((error) => {
@@ -93,8 +99,8 @@ function photoSearchError() {
 function showMessageAboutAllPhoto(totalHits) {
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
 }
-function showInfoMessageNoNamePhoto() {
-    Notiflix.Notify.info("Enter a name for the photo")
+function showInfoMessageEndSearch() {
+    Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
 }
 
 function createSimpleLightbox () {
