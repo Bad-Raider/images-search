@@ -23,6 +23,7 @@ let perPage = 40;
 let inputValue = "";
 let simpleLightBox; 
 
+
 // const { height: cardHeight } = document
 //   .querySelector(".gallery")
 //   .firstElementChild.getBoundingClientRect();
@@ -47,17 +48,26 @@ function handleSearchPhotoBySubmitForm(e) {
     };
         
     fetchSearchPhoto(inputValue, page, perPage)
-        .then(({totalHits, hits}) => {
+        .then(({ totalHits, hits }) => {
+            const totalPages = Math.ceil(totalHits / perPage);
+
             if (hits.length === 0) {
                 refs.btnLoadMoreEl.classList.add("is-hiden");
                 destroyMarkup();
                 return photoSearchError();
             };
+
             refs.btnLoadMoreEl.classList.remove("is-hiden");
             destroyMarkup();
             showMessageAboutAllPhoto(totalHits);           
             createMarkup(hits);
             createSimpleLightbox();
+            
+            if (page === totalPages) { 
+                refs.btnLoadMoreEl.classList.add("is-hiden");
+                showInfoMessageEndSearch()
+            };
+
         })
         .catch(() => {
             photoSearchError();
