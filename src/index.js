@@ -2,6 +2,7 @@ import './css/styles.css';
 import './css/gallery.css';
 import './css/form.css';
 import './css/btnLoadMore.css';
+import './css/btnBackToTop.css';
 import './js/fetch';
 import markupGallery from './templates/markupGallary.hbs';
 import Notiflix from 'notiflix';
@@ -23,6 +24,10 @@ let perPage = 40;
 let inputValue = "";
 let simpleLightBox; 
 
+const btn = document.querySelector('.btn-back-to-top');
+const html = document.querySelector('html');
+
+
 // hide btn "Loade More", when you first start searching photo
 refs.btnLoadMoreEl.classList.add("is-hiden");
 
@@ -42,7 +47,7 @@ function handleSearchPhotoBySubmitForm(e) {
     if (inputValue === "") {
         return photoSearchError();
     };
-        
+        // get info by API 
      fetchSearchPhoto(inputValue, page, perPage)
         .then(({ totalHits, hits }) => {
             const totalPages = Math.ceil(totalHits / perPage);
@@ -58,7 +63,6 @@ function handleSearchPhotoBySubmitForm(e) {
             showMessageAboutAllPhoto(totalHits);           
             createMarkup(hits);
             createSimpleLightbox();
-            // scrollingPages();
 
             if (page >= totalPages) { 
                 refs.btnLoadMoreEl.classList.add("is-hiden");
@@ -71,13 +75,15 @@ function handleSearchPhotoBySubmitForm(e) {
         })
 };
 
-// Loade More photo
-
+// Load More photo
 refs.btnLoadMoreEl.addEventListener("click", handleBtnClick);
 
-    function handleBtnClick() {
-        page += 1;
-        simpleLightBox.destroy();
+// handler btn load more photo 
+function handleBtnClick() {
+// counter pages after loadning more photo
+    page += 1;
+// updating simpleLightBox after next restart pages  
+    simpleLightBox.destroy();
 
         fetchSearchPhoto(inputValue, page, perPage)
         .then(({totalHits, hits}) => {           
@@ -90,7 +96,7 @@ refs.btnLoadMoreEl.addEventListener("click", handleBtnClick);
             }    
             createMarkup(hits);
             createSimpleLightbox();
-            scrollingPages();
+            // scrollingPages();
         })
         .catch((error) => {
             console.log(error)
@@ -99,7 +105,7 @@ refs.btnLoadMoreEl.addEventListener("click", handleBtnClick);
 
 
 
-
+// All functions
 function createMarkup(data) {
     refs.gallaryEl.insertAdjacentHTML("beforeend", markupGallery(data));
 };
@@ -132,3 +138,6 @@ window.scrollBy({
   behavior: "smooth",
 });  
 };
+
+
+

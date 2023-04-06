@@ -1,0 +1,26 @@
+.btn-back-to-top{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  border-radius: 50px;
+  background-color: #212121;
+  border: solid 2px;
+  border-color: #f2dbdb;
+  color: #f2dbdb;
+
+}
+
+.btn-back-to-top:hover{    
+  background-color: #f2dbdb;
+  border: solid 2px;
+  border-color: #212121;
+  color: #212121;
+  z-index: 9999;
+}
