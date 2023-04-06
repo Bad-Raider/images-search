@@ -7,7 +7,7 @@ const options = new URLSearchParams({
     image_type: "photo",
     orientation: "horizontal",
     safesearch: true,
-    colors: "black",
+    // colors: "black",
 }).toString();
 
 export default async function fetchSearchPhoto(value, page, perPage) {

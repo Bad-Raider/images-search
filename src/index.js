@@ -62,8 +62,9 @@ function handleSearchPhotoBySubmitForm(e) {
             showMessageAboutAllPhoto(totalHits);           
             createMarkup(hits);
             createSimpleLightbox();
-            
-            if (page === totalPages) { 
+            // scrollingPages();
+
+            if (page >= totalPages) { 
                 refs.btnLoadMoreEl.classList.add("is-hiden");
                 showInfoMessageEndSearch()
             };
@@ -93,6 +94,7 @@ refs.btnLoadMoreEl.addEventListener("click", handleBtnClick);
             }    
             createMarkup(hits);
             createSimpleLightbox();
+            scrollingPages();
         })
         .catch((error) => {
             console.log(error)
@@ -125,3 +127,12 @@ function createSimpleLightbox () {
     simpleLightBox = new SimpleLightbox('.gallery a').refresh();
 };
 
+function scrollingPages() {
+    const { height: cardHeight } = refs.gallaryEl
+        .firstElementChild.getBoundingClientRect();
+
+window.scrollBy({
+  top: cardHeight * 2,
+  behavior: "smooth",
+});  
+};
