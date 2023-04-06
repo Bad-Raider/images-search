@@ -9,7 +9,7 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import fetchSearchPhoto from './js/fetch';
 
-
+// DOM elements
 const refs = {
     formEL: document.querySelector(".search-form"),
     inputEl: document.querySelector("input[name='searchQuery']"),
@@ -23,31 +23,27 @@ let perPage = 40;
 let inputValue = "";
 let simpleLightBox; 
 
-
-// const { height: cardHeight } = document
-//   .querySelector(".gallery")
-//   .firstElementChild.getBoundingClientRect();
-
-// window.scrollBy({
-//   top: cardHeight * 2,
-//   behavior: "smooth",
-// });
-
+// hide btn "Loade More", when you first start searching photo
 refs.btnLoadMoreEl.classList.add("is-hiden");
 
+// Searching photo
 refs.formEL.addEventListener("submit", handleSearchPhotoBySubmitForm);
 
-
+// handler "Searching photo"
 function handleSearchPhotoBySubmitForm(e) {
+    // don`t restart page
     e.preventDefault();
+    // restarting page number , when you start new searching 
     page = 1;
+    // it`s word that you searching
     inputValue = refs.inputEl.value.trim();
-
+    /* when you don`t enter word by searching, returned message about error 
+    and code stoped*/ 
     if (inputValue === "") {
         return photoSearchError();
     };
         
-    fetchSearchPhoto(inputValue, page, perPage)
+     fetchSearchPhoto(inputValue, page, perPage)
         .then(({ totalHits, hits }) => {
             const totalPages = Math.ceil(totalHits / perPage);
 
