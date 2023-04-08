@@ -4,6 +4,7 @@ import './css/form.css';
 import './css/btnLoadMore.css';
 import './css/btnBackToTop.css';
 import './js/fetch';
+import './js/btnUpTop';
 import markupGallery from './templates/markupGallary.hbs';
 import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
@@ -24,13 +25,9 @@ let perPage = 40;
 let inputValue = "";
 let simpleLightBox; 
 
-const btn = document.querySelector('.btn-back-to-top');
-const html = document.querySelector('html');
-
 
 // hide btn "Loade More", when you first start searching photo
 refs.btnLoadMoreEl.classList.add("is-hiden");
-
 // Searching photo
 refs.formEL.addEventListener("submit", handleSearchPhotoBySubmitForm);
 
@@ -42,6 +39,7 @@ function handleSearchPhotoBySubmitForm(e) {
     page = 1;
     // it`s word that you searching
     inputValue = refs.inputEl.value.trim();
+
     /* when you don`t enter word by searching, returned message about error 
     and code stoped*/ 
     if (inputValue === "") {
@@ -49,21 +47,26 @@ function handleSearchPhotoBySubmitForm(e) {
     };
         // get info by API 
      fetchSearchPhoto(inputValue, page, perPage)
-        .then(({ totalHits, hits }) => {
+         .then(({ totalHits, hits }) => {
+            // Total number of pages
             const totalPages = Math.ceil(totalHits / perPage);
-
+            /* checking query, if he empty, then show a message and 
+            don`t show button "load More"*/  
             if (hits.length === 0) {
                 refs.btnLoadMoreEl.classList.add("is-hiden");
                 destroyMarkup();
                 return photoSearchError();
             };
+            // show button "load More"
+             refs.btnLoadMoreEl.classList.remove("is-hiden");
 
-            refs.btnLoadMoreEl.classList.remove("is-hiden");
             destroyMarkup();
             showMessageAboutAllPhoto(totalHits);           
             createMarkup(hits);
             createSimpleLightbox();
-
+            /* check the data received from the backend database, 
+            if there is no data, show a message about end search + 
+            don`t show button "load More"*/
             if (page >= totalPages) { 
                 refs.btnLoadMoreEl.classList.add("is-hiden");
                 showInfoMessageEndSearch()
@@ -87,16 +90,18 @@ function handleBtnClick() {
 
         fetchSearchPhoto(inputValue, page, perPage)
         .then(({totalHits, hits}) => {           
-                
+            // Total number of pages
             const totalPages = Math.ceil(totalHits / perPage)
-
+            /* check the data received from the backend database, 
+            if there is no data, show a message about end search + 
+            don`t show button "load More"*/
             if (page > totalPages) {
                 refs.btnLoadMoreEl.classList.add("is-hiden");
                 showInfoMessageEndSearch()
             }    
             createMarkup(hits);
             createSimpleLightbox();
-            // scrollingPages();
+            scrollingPages();
         })
         .catch((error) => {
             console.log(error)
@@ -105,7 +110,7 @@ function handleBtnClick() {
 
 
 
-// All functions
+// All functions, which 
 function createMarkup(data) {
     refs.gallaryEl.insertAdjacentHTML("beforeend", markupGallery(data));
 };
@@ -138,6 +143,5 @@ window.scrollBy({
   behavior: "smooth",
 });  
 };
-
 
 
