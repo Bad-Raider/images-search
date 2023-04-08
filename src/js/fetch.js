@@ -12,9 +12,7 @@ const options = new URLSearchParams({
 
 export default async function fetchSearchPhoto(value, page, perPage) {
     const response = await axios.get(`${API}?key=${PERSONAL_KEY}&q=${value}&${options}&per_page=${perPage}&page=${page}`);
-     
-    const data = await response.data;
-           
-    return data;
+               
+    return await response.data;;
 };
 
