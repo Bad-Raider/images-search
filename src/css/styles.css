@@ -24,5 +24,12 @@ a {
   z-index: 1;
 }
 
+#scrollArea{
+  width: 100px;
+  height: 100px;
+  background-color: #212121;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 

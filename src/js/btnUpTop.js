@@ -11,10 +11,7 @@ gallaryEl.insertAdjacentElement("afterend", btnUpTop);
 
 // adding smoth scroll when you click to button "back to top"
 btnUpTop.addEventListener("click", () => {
-        window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-    });
+  comeBackToTopPage();
 });
 
 // is-hiden button "back to top"
@@ -25,3 +22,11 @@ window.addEventListener('scroll', () => {
     btnUpTop.style.display = 'none';
   }
 });
+
+// come back to top page
+export default function comeBackToTopPage() {
+  window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+    });
+};

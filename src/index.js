@@ -1,10 +1,11 @@
 import './css/styles.css';
 import './css/gallery.css';
 import './css/form.css';
-import './css/btnLoadMore.css';
+// import './css/btnLoadMore.css';
 import './css/btnBackToTop.css';
 import './js/fetch';
 import './js/btnUpTop';
+import comeBackToTopPage from './js/btnUpTop';
 import markupGallery from './templates/markupGallary.hbs';
 import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
@@ -17,7 +18,7 @@ const refs = {
     inputEl: document.querySelector("input[name='searchQuery']"),
     btnSubmit: document.querySelector("button[type='submit']"),
     gallaryEl: document.querySelector(".gallery"),
-    btnLoadMoreEl: document.querySelector(".load-more"),
+    // btnLoadMoreEl: document.querySelector(".load-more"),
 };
 
 let page = 1;
@@ -26,8 +27,8 @@ let inputValue = "";
 let simpleLightBox; 
 
 
-// hide btn "Loade More", when you first start searching photo
-refs.btnLoadMoreEl.classList.add("is-hiden");
+// // hide btn "Loade More", when you first start searching photo
+// refs.btnLoadMoreEl.classList.add("is-hiden");
 // Searching photo
 refs.formEL.addEventListener("submit", handleSearchPhotoBySubmitForm);
 
@@ -40,7 +41,8 @@ function handleSearchPhotoBySubmitForm(e) {
     // it`s word that you searching
     inputValue = refs.inputEl.value.trim();
 
-    /* when you don`t enter word by searching, returned message about error 
+    comeBackToTopPage();
+    /* when you don`t enter word by searching, returned message about error
     and code stoped*/ 
     if (inputValue === "") {
         return photoSearchError();
@@ -53,12 +55,12 @@ function handleSearchPhotoBySubmitForm(e) {
             /* checking query, if he empty, then show a message and 
             don`t show button "load More"*/  
             if (hits.length === 0) {
-                refs.btnLoadMoreEl.classList.add("is-hiden");
+                // refs.btnLoadMoreEl.classList.add("is-hiden");
                 destroyMarkup();
                 return photoSearchError();
             };
             // show button "load More"
-             refs.btnLoadMoreEl.classList.remove("is-hiden");
+            //  refs.btnLoadMoreEl.classList.remove("is-hiden");
 
             destroyMarkup();
             showMessageAboutAllPhoto(totalHits);           
@@ -68,7 +70,7 @@ function handleSearchPhotoBySubmitForm(e) {
             if there is no data, show a message about end search + 
             don`t show button "load More"*/
             if (page >= totalPages) { 
-                refs.btnLoadMoreEl.classList.add("is-hiden");
+                // refs.btnLoadMoreEl.classList.add("is-hiden");
                 showInfoMessageEndSearch()
             };
 
@@ -79,34 +81,34 @@ function handleSearchPhotoBySubmitForm(e) {
 };
 
 // Load More photo
-refs.btnLoadMoreEl.addEventListener("click", handleBtnClick);
+// refs.btnLoadMoreEl.addEventListener("click", handleBtnClick);
 
 // handler btn load more photo 
-function handleBtnClick() {
-// counter pages after loadning more photo
-    page += 1;
-// updating simpleLightBox after next restart pages  
-    simpleLightBox.destroy();
+// function handleBtnClick() {
+// // counter pages after loadning more photo
+//     page += 1;
+// // updating simpleLightBox after next restart pages  
+//     simpleLightBox.destroy();
 
-        fetchSearchPhoto(inputValue, page, perPage)
-        .then(({totalHits, hits}) => {           
-            // Total number of pages
-            const totalPages = Math.ceil(totalHits / perPage)
-            /* check the data received from the backend database, 
-            if there is no data, show a message about end search + 
-            don`t show button "load More"*/
-            if (page > totalPages) {
-                refs.btnLoadMoreEl.classList.add("is-hiden");
-                showInfoMessageEndSearch()
-            }    
-            createMarkup(hits);
-            createSimpleLightbox();
-            scrollingPages();
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-};
+//         fetchSearchPhoto(inputValue, page, perPage)
+//         .then(({totalHits, hits}) => {           
+//             // Total number of pages
+//             const totalPages = Math.ceil(totalHits / perPage)
+//             /* check the data received from the backend database, 
+//             if there is no data, show a message about end search + 
+//             don`t show button "load More"*/
+//             if (page > totalPages) {
+//                 refs.btnLoadMoreEl.classList.add("is-hiden");
+//                 showInfoMessageEndSearch()
+//             }    
+//             createMarkup(hits);
+//             createSimpleLightbox();
+//             scrollingPages();
+//         })
+//         .catch((error) => {
+//             console.log(error)
+//         })
+// };
 
 
 
@@ -134,14 +136,55 @@ function createSimpleLightbox () {
     simpleLightBox = new SimpleLightbox('.gallery a').refresh();
 };
 
-function scrollingPages() {
-    const { height: cardHeight } = refs.gallaryEl
-        .firstElementChild.getBoundingClientRect();
+// function scrollingPages() {
+//     const { height: cardHeight } = refs.gallaryEl
+//         .firstElementChild.getBoundingClientRect();
 
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: "smooth",
-});  
+//     window.scrollBy({
+//     top: cardHeight * 2,
+//     behavior: "smooth",
+// });  
+// };
+
+
+// infinity scroll
+
+//  option infinity scroll
+
+const options = {    
+    rootMargin: '500px',
 };
 
+const callback = (entries) => {
+  
+    entries.forEach(entrie => {
+        
+        if (entrie.isIntersecting && inputValue !== "")  {
+            page += 1;
+            console.log(page);
+
+            fetchSearchPhoto(inputValue, page, perPage)
+            .then(({totalHits, hits}) => {           
+            // Total number of pages
+            const totalPages = Math.ceil(totalHits / perPage)
+            /* check the data received from the backend database, 
+            if there is no data, show a message about end search + 
+            don`t show button "load More"*/
+            if (page > totalPages) {
+                showInfoMessageEndSearch();
+            }    
+                createMarkup(hits);
+                simpleLightBox.destroy();
+                createSimpleLightbox();
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+        }
+    });
+};
+
+const observer = new IntersectionObserver(callback, options);
+
+observer.observe(document.querySelector('#scrollArea'));
 
