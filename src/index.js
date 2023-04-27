@@ -2,8 +2,7 @@ import './css/styles.css';
 import './css/gallery.css';
 import './css/form.css';
 import './css/btnBackToTop.css';
-import './js/fetch';
-import './js/btnUpTop';
+import './js/spinner.js';
 import comeBackToTopPage from './js/btnUpTop';
 import markupGallery from './templates/markupGallary.hbs';
 import Notiflix from 'notiflix';
@@ -71,20 +70,16 @@ function handleSearchPhotoBySubmitForm(e) {
         })
 };
 
-// infinity scroll
-//  option infinity scroll
+
+// =============== infinity scroll =================
 const options = {    
     rootMargin: '500px',
 };
-
 const callback = (entries) => {
-  
     entries.forEach(entrie => {
-        
         if (entrie.isIntersecting && inputValue !== "")  {
             page += 1;
             console.log(page);
-
             fetchSearchPhoto(inputValue, page, perPage)
             .then(({totalHits, hits}) => {           
             // Total number of pages
@@ -105,31 +100,30 @@ const callback = (entries) => {
         }
     });
 };
-
 const observer = new IntersectionObserver(callback, options);
-
 observer.observe(document.querySelector('#scrollArea'));
 
-// All functions, which 
+
+
+
+
+
+//!================ All functions ========================= 
 function createMarkup(data) {
     refs.gallaryEl.insertAdjacentHTML("beforeend", markupGallery(data));
 };
-
 function destroyMarkup() {
     refs.gallaryEl.innerHTML = "";
 }
-
 function photoSearchError() {
     Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");    
 };
-
 function showMessageAboutAllPhoto(totalHits) {
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
 }
 function showInfoMessageEndSearch() {
     Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
 }
-
 function createSimpleLightbox () {
     simpleLightBox = new SimpleLightbox('.gallery a').refresh();
 };
