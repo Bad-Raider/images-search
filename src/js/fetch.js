@@ -1,5 +1,4 @@
 import axios from "axios";
-// import './spinner';
 import Notiflix from 'notiflix';
 
 

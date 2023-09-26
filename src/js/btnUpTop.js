@@ -1,5 +1,3 @@
-
-// DOM elements 
 const gallaryEl = document.querySelector(".gallery");
 const btnUpTop = document.createElement("button");
 btnUpTop.type = "button";
@@ -8,13 +6,10 @@ btnUpTop.classList.add("btn-back-to-top");
 btnUpTop.style.display = 'none';
 gallaryEl.insertAdjacentElement("afterend", btnUpTop);
 
-
-// adding smoth scroll when you click to button "back to top"
 btnUpTop.addEventListener("click", () => {
   comeBackToTopPage();
 });
 
-// is-hiden button "back to top"
 window.addEventListener('scroll', () => {
   if (window.pageYOffset > 500) { 
     btnUpTop.style.display = 'block';
@@ -23,7 +18,6 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// come back to top page
 export default function comeBackToTopPage() {
   window.scrollTo({
         top: 0,

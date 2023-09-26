@@ -10,7 +10,6 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import fetchSearchPhoto from './js/fetch';
 
-// DOM elements
 const refs = {
     formEL: document.querySelector(".search-form"),
     inputEl: document.querySelector("input[name='searchQuery']"),
@@ -24,43 +23,28 @@ let inputValue = "";
 let simpleLightBox; 
 
 
-// Searching photo
 refs.formEL.addEventListener("submit", handleSearchPhotoBySubmitForm);
 
-// handler "Searching photo"
 function handleSearchPhotoBySubmitForm(e) {
-    // don`t restart page
     e.preventDefault();
-    // restarting page number , when you start new searching 
     page = 1;
-    // it`s word that you searching
     inputValue = refs.inputEl.value.trim();
 
     comeBackToTopPage();
-    /* when you don`t enter word by searching, returned message about error
-    and code stoped*/ 
     if (inputValue === "") {
         return photoSearchError();
     };
-        // get info by API 
      fetchSearchPhoto(inputValue, page, perPage)
          .then(({ totalHits, hits }) => {
-            // Total number of pages
             const totalPages = Math.ceil(totalHits / perPage);
-            /* checking query, if he empty, then show a message and 
-            don`t show button "load More"*/  
             if (hits.length === 0) {
                 destroyMarkup();
                 return photoSearchError();
             };
-
             destroyMarkup();
             showMessageAboutAllPhoto(totalHits);           
             createMarkup(hits);
             createSimpleLightbox();
-            /* check the data received from the backend database, 
-            if there is no data, show a message about end search + 
-            don`t show button "load More"*/
             if (page >= totalPages) { 
                 showInfoMessageEndSearch()
             };
@@ -82,11 +66,7 @@ const callback = (entries) => {
             console.log(page);
             fetchSearchPhoto(inputValue, page, perPage)
             .then(({totalHits, hits}) => {           
-            // Total number of pages
             const totalPages = Math.ceil(totalHits / perPage)
-            /* check the data received from the backend database, 
-            if there is no data, show a message about end search + 
-            don`t show button "load More"*/
             if (page > totalPages) {
                 showInfoMessageEndSearch();
             }    
