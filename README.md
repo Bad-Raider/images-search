@@ -1,14 +1,13 @@
 ## Image Search
 
 **Technologies Used**
-- JavaScript (JS)
-- HTML
-- Handlebars (Template Engine)
-- CSS
-- Axios and Fetch for API Requests
-- Notiflix Library for Custom Event Notifications
-- SimpleLightbox Library for Image Viewing
-- Responsive Design for Various Devices
+- `JavaScript` (JS)
+- `HTML`
+- `Handlebars` (Template Engine)
+- `CSS`
+- `Axios` and Fetch for API Requests
+- `Notiflix` Library for Custom Event Notifications
+- `SimpleLightbox` Library for Image Viewing
 
 ## Description
 This web application has been developed to provide users with the ability to search for images based on their queries. It leverages a variety of technologies and libraries to create a seamless user experience.
