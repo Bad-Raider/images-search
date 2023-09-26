@@ -9,13 +9,7 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import fetchSearchPhoto from './js/fetch';
-
-const refs = {
-    formEL: document.querySelector(".search-form"),
-    inputEl: document.querySelector("input[name='searchQuery']"),
-    btnSubmit: document.querySelector("button[type='submit']"),
-    gallaryEl: document.querySelector(".gallery"),
-};
+import refs from './js/refsElement';
 
 let page = 1;
 let perPage = 40;
@@ -81,10 +75,7 @@ const callback = (entries) => {
     });
 };
 const observer = new IntersectionObserver(callback, options);
-observer.observe(document.querySelector('#scrollArea'));
-
-
-
+observer.observe(refs.scroll);
 
 
 
