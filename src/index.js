@@ -3,13 +3,19 @@ import './css/gallery.css';
 import './css/form.css';
 import './css/btnBackToTop.css';
 import './js/spinner.js';
-import comeBackToTopPage from './js/btnUpTop';
-import markupGallery from './templates/markupGallary.hbs';
-import Notiflix from 'notiflix';
-import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+import comeBackToTopPage from './js/btnUpTop';
 import fetchSearchPhoto from './js/fetch';
+import markupGallery from './templates/markupGallary.hbs';
+import SimpleLightbox from "simplelightbox";
 import refs from './js/refsElement';
+import * as Notiflix from './js/notify';
+
+const {
+    photoSearchError,
+    showMessageAboutAllPhoto,
+    showInfoMessageEndSearch,
+} = Notiflix;
 
 let page = 1;
 let perPage = 40;
@@ -48,7 +54,6 @@ function handleSearchPhotoBySubmitForm(e) {
         })
 };
 
-
 // =============== infinity scroll =================
 const options = {    
     rootMargin: '500px',
@@ -77,23 +82,12 @@ const callback = (entries) => {
 const observer = new IntersectionObserver(callback, options);
 observer.observe(refs.scroll);
 
-
-
 //!================ All functions ========================= 
 function createMarkup(data) {
     refs.gallaryEl.insertAdjacentHTML("beforeend", markupGallery(data));
 };
 function destroyMarkup() {
     refs.gallaryEl.innerHTML = "";
-}
-function photoSearchError() {
-    Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");    
-};
-function showMessageAboutAllPhoto(totalHits) {
-    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
-}
-function showInfoMessageEndSearch() {
-    Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
 }
 function createSimpleLightbox () {
     simpleLightBox = new SimpleLightbox('.gallery a').refresh();
